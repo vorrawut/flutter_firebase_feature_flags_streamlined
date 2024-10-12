@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_feature_flags/firebase/domains/onboarding_feature_flags.dart';
+import 'package:flutter_firebase_feature_flags/firebase/domains/security_feature_flags.dart';
+import 'package:flutter_firebase_feature_flags/firebase/feature_flag_extension.dart';
+import 'package:flutter_firebase_feature_flags/firebase/feature_flag_service.dart';
 import 'package:flutter_firebase_feature_flags/firebase_options.dart';
 
 void main() {
@@ -27,24 +30,28 @@ class _MyAppState extends State<MyApp> {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    if (!kDebugMode) {
-      await FirebaseRemoteConfig.instance.fetchAndActivate();
-    }
+
+    // Applying these defaults to Firebase Remote Config
+    var service = FeatureFlagService();
+    await FirebaseRemoteConfig.instance.setDefaults(
+      service.getAllFeatureFlagDefaults([
+        OnboardingFeatureFlags(),
+        SecurityFeatureFlags(),
+      ]),
+    );
 
     final remoteConfig = FirebaseRemoteConfig.instance;
-
-    // Set default values
-    await remoteConfig.setDefaults({
-      'new_feature_enabled': false, // Default is off
-    });
 
     // Fetch and activate config
     await remoteConfig.fetchAndActivate();
 
     // Check if the feature is enabled
-    bool isNewFeatureEnabled = remoteConfig.getBool('new_feature_enabled');
-
-    print('Is the new feature enabled? $isNewFeatureEnabled');
+    print(
+        'Is enableNewUserFlow enabled? ${OnboardingFeatureFlags.enableNewUserFlow.isEnabled()}');
+    print(
+        'Is enableReferrals enabled? ${OnboardingFeatureFlags.enableReferrals.isEnabled()}');
+    print(
+        'Is enableEncryptionTemporary enabled? ${SecurityFeatureFlags.enableEncryptionTemporary.isEnabled()}');
   }
 
   // This widget is the root of your application.
