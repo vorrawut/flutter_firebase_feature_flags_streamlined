@@ -17,4 +17,3 @@ samples, guidance on mobile development, and a full API reference.
 # flutter_firebase_feature_flags
 # flutter_firebase_feature_flags_streamlined
 # flutter_firebase_feature_flags_realtime
-# flutter_firebase_feature_flags_realtime
