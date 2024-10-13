@@ -3,8 +3,8 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_feature_flags/firebase/domains/onboarding_feature_flags.dart';
 import 'package:flutter_firebase_feature_flags/firebase/domains/security_feature_flags.dart';
-import 'package:flutter_firebase_feature_flags/firebase/feature_flag_extension.dart';
 import 'package:flutter_firebase_feature_flags/firebase/feature_flag_service.dart';
+import 'package:flutter_firebase_feature_flags/utils/locator.dart';
 import 'package:flutter_firebase_feature_flags/firebase_options.dart';
 
 void main() {
@@ -21,6 +21,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
+    setupLocator(); // Initialize the service locator
     initializeFirebase();
     super.initState();
   }
@@ -32,13 +33,11 @@ class _MyAppState extends State<MyApp> {
     );
 
     // Applying these defaults to Firebase Remote Config
-    var service = FeatureFlagService();
-    await FirebaseRemoteConfig.instance.setDefaults(
-      service.getAllFeatureFlagDefaults([
-        OnboardingFeatureFlags(),
-        SecurityFeatureFlags(),
-      ]),
-    );
+    var featureFlagService = locator<FeatureFlagService>();
+    featureFlagService.setup([
+      OnboardingFeatureFlags(),
+      SecurityFeatureFlags(),
+    ]);
 
     final remoteConfig = FirebaseRemoteConfig.instance;
 
@@ -47,11 +46,11 @@ class _MyAppState extends State<MyApp> {
 
     // Check if the feature is enabled
     print(
-        'Is enableNewUserFlow enabled? ${OnboardingFeatureFlags.enableNewUserFlow.isEnabled()}');
+        'Is enableNewUserFlow enabled? ${OnboardingFeatureFlags.enableNewUserFlow.isEnabled}');
     print(
-        'Is enableReferrals enabled? ${OnboardingFeatureFlags.enableReferrals.isEnabled()}');
+        'Is enableReferrals enabled? ${OnboardingFeatureFlags.enableReferrals.isEnabled}');
     print(
-        'Is enableEncryptionTemporary enabled? ${SecurityFeatureFlags.enableEncryptionTemporary.isEnabled()}');
+        'Is enableEncryptionTemporary enabled? ${SecurityFeatureFlags.enableEncryptionTemporary.isEnabled}');
   }
 
   // This widget is the root of your application.
@@ -152,9 +151,13 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
+            OnboardingFeatureFlags.enableNewUserFlow.isEnabled
+                ? const Text(
+                    'Enable: You have pushed the button this many times:',
+                  )
+                : const Text(
+                    'Disable to show : have pushed the button this many times:',
+                  ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
@@ -162,11 +165,13 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: OnboardingFeatureFlags.enableNewUserFlow.isEnabled
+          ? FloatingActionButton(
+              onPressed: _incrementCounter,
+              tooltip: 'Increment',
+              child: const Icon(Icons.add),
+            )
+          : Container(), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
