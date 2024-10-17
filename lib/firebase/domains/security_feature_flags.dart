@@ -15,7 +15,4 @@ class SecurityFeatureFlags extends FeatureFlagDomain {
   List<BaseFeatureFlag> get featureFlags => [
         enableEncryptionTemporary,
       ];
-
-  @override
-  List<BaseFeatureFlag> get realtimeSyncFlags => [];
 }

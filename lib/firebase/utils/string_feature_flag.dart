@@ -5,7 +5,6 @@ class StringFeatureFlag extends BaseFeatureFlag<String?> {
   StringFeatureFlag({
     required super.key,
     required super.initialValue,
-    super.isRealtime,
   });
 
   @override

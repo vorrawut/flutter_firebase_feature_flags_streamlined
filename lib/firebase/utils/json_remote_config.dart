@@ -6,7 +6,6 @@ class JsonRemoteConfig extends BaseFeatureFlag<List<dynamic>?> {
   JsonRemoteConfig({
     required super.key,
     required super.initialValue,
-    super.isRealtime,
   });
 
   @override

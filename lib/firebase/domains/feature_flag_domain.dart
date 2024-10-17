@@ -1,12 +1,10 @@
 import 'package:flutter_firebase_feature_flags/firebase/utils/base_feature_flag.dart';
 
+// Abstract class for feature flag domains
 abstract class FeatureFlagDomain {
-  // Default values for flags, if needed
+  // Map of default values for feature flags (supports multiple types)
   Map<String, dynamic> get overriddenDefaults;
 
-  // List of all flags in this domain
+  // List of all feature flags (supports multiple types)
   List<BaseFeatureFlag> get featureFlags;
-
-  // Flags that need real-time syncing
-  List<BaseFeatureFlag> get realtimeSyncFlags;
 }

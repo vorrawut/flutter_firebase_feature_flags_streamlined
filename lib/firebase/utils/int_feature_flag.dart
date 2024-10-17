@@ -5,7 +5,6 @@ class IntFeatureFlag extends BaseFeatureFlag<int> {
   IntFeatureFlag({
     required super.key,
     required super.initialValue,
-    super.isRealtime,
   });
 
   @override

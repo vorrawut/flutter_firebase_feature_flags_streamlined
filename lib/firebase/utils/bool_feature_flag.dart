@@ -5,7 +5,6 @@ class BoolFeatureFlag extends BaseFeatureFlag<bool> {
   BoolFeatureFlag({
     required super.key,
     super.initialValue = false,
-    super.isRealtime,
   });
 
   @override

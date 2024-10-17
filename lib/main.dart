@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
 
     // Applying these defaults to Firebase Remote Config
     var featureFlagService = locator<FeatureFlagService>();
-    featureFlagService.setup([
+    featureFlagService.initializeAllFlags([
       OnboardingFeatureFlags(),
       SecurityFeatureFlags(),
     ]);
@@ -46,9 +46,8 @@ class _MyAppState extends State<MyApp> {
 
     // Check if the feature is enabled
     print(
-        'Is enableNewUserFlow enabled? ${OnboardingFeatureFlags.enableNewUserFlow.isEnabled}');
-    print(
-        'Is enableReferrals enabled? ${OnboardingFeatureFlags.enableReferrals.isEnabled}');
+        'Is New User Flow Enabled? ${OnboardingFeatureFlags.enableNewUserFlow.isEnabled}');
+    print('Welcome Message: ${OnboardingFeatureFlags.welcomeMessage.value}');
     print(
         'Is enableEncryptionTemporary enabled? ${SecurityFeatureFlags.enableEncryptionTemporary.isEnabled}');
   }
