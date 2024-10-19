@@ -6,6 +6,7 @@ test_patterns = ["test/", "tests/"]
 name = "dart-analyze"
 type = "community"
 enabled = true
+path = "./lib"
 
 [[analyzers]]
 name = "kotlin"
