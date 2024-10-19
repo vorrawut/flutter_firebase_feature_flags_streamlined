@@ -5,24 +5,15 @@ name = "dart-analyze"
 type = "community"
 
 [[analyzers]]
-name = "ruby"
-
-[[analyzers]]
-name = "swift"
-
-[[analyzers]]
 name = "kotlin"
 
   [analyzers.meta]
   runtime_version = "18"
   language_version = "1.9"
 
-[[transformers]]
-name = "ktlint"
-
-[[transformers]]
-name = "swift-format"
-
 [[analyzers]]
 name = "dart-analyze"
 type = "community"
+
+[[transformers]]
+name = "ktlint"
